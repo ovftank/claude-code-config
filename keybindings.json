@@ -1,0 +1,297 @@
+{
+  "$schema": "https://www.schemastore.org/claude-code-keybindings.json",
+  "$docs": "https://code.claude.com/docs/en/keybindings",
+  "bindings": [
+    {
+      "context": "Global",
+      "bindings": {
+        "ctrl+t": null,
+        "ctrl+o": null,
+        "ctrl+shift+b": null,
+        "ctrl+r": null,
+        "ctrl+up": null,
+        "ctrl+down": null,
+        "meta+up": null,
+        "meta+down": null,
+        "ctrl+]": null
+      }
+    },
+    {
+      "context": "DiffPanel",
+      "bindings": {
+        "ctrl+x b": null
+      }
+    },
+    {
+      "context": "Chat",
+      "bindings": {
+        "escape": "chat:cancel",
+        "ctrl+l": null,
+        "cmd+k": null,
+        "ctrl+x ctrl+k": null,
+        "shift+tab": null,
+        "ctrl+t": null,
+        "meta+p": null,
+        "meta+o": null,
+        "meta+t": null,
+        "meta+w": null,
+        "enter": "chat:submit",
+        "ctrl+x enter": null,
+        "ctrl+enter": null,
+        "ctrl+j": null,
+        "up": "history:previous",
+        "down": "history:next",
+        "ctrl+_": null,
+        "ctrl+-": null,
+        "ctrl+shift+-": null,
+        "ctrl+shift+_": null,
+        "ctrl+z": "chat:undo",
+        "shift+enter": null,
+        "ctrl+x ctrl+e": null,
+        "ctrl+g": null,
+        "ctrl+s": null,
+        "alt+v": "chat:imagePaste",
+        "space": null
+      }
+    },
+    {
+      "context": "Autocomplete",
+      "bindings": {
+        "tab": "autocomplete:accept",
+        "escape": "autocomplete:dismiss",
+        "up": "autocomplete:previous",
+        "down": "autocomplete:next"
+      }
+    },
+    {
+      "context": "Settings",
+      "bindings": {
+        "escape": "confirm:no",
+        "up": "select:previous",
+        "down": "select:next",
+        "k": null,
+        "j": null,
+        "ctrl+p": null,
+        "ctrl+n": null,
+        "space": null,
+        "enter": "select:accept",
+        "/": null,
+        "r": null,
+        "d": null,
+        "w": null,
+        "t": null,
+        "ctrl+u": null
+      }
+    },
+    {
+      "context": "Confirmation",
+      "bindings": {
+        "y": null,
+        "n": null,
+        "enter": "confirm:yes",
+        "escape": "confirm:no",
+        "up": "confirm:previous",
+        "down": "confirm:next",
+        "tab": null,
+        "space": null,
+        "shift+tab": null
+      }
+    },
+    {
+      "context": "Tabs",
+      "bindings": {
+        "tab": null,
+        "shift+tab": null,
+        "right": "tabs:next",
+        "left": "tabs:previous"
+      }
+    },
+    {
+      "context": "Transcript",
+      "bindings": {
+        "ctrl+e": null,
+        "escape": "transcript:exit",
+        "q": null,
+        "ctrl+u": null,
+        "ctrl+b": null,
+        "ctrl+f": null,
+        "ctrl+n": null,
+        "ctrl+p": null,
+        "g": null,
+        "shift+g": null,
+        "j": null,
+        "k": null,
+        "space": null,
+        "b": null,
+        "up": "scroll:lineUp",
+        "down": "scroll:lineDown",
+        "home": null,
+        "end": null
+      }
+    },
+    {
+      "context": "HistorySearch",
+      "bindings": {
+        "ctrl+r": null,
+        "escape": "historySearch:accept",
+        "tab": null,
+        "enter": "historySearch:execute",
+        "ctrl+s": null
+      }
+    },
+    {
+      "context": "Task",
+      "bindings": {
+        "ctrl+x ctrl+b": null,
+        "ctrl+b": null
+      }
+    },
+    {
+      "context": "ThemePicker",
+      "bindings": {
+        "ctrl+t": null,
+        "ctrl+e": null
+      }
+    },
+    {
+      "context": "Scroll",
+      "bindings": {
+        "pageup": null,
+        "pagedown": null,
+        "wheelup": "scroll:lineUp",
+        "wheeldown": "scroll:lineDown",
+        "ctrl+home": null,
+        "ctrl+end": null,
+        "ctrl+shift+c": null,
+        "cmd+c": null,
+        "shift+left": null,
+        "shift+right": null,
+        "shift+up": null,
+        "shift+down": null,
+        "shift+home": null,
+        "shift+end": null
+      }
+    },
+    {
+      "context": "Help",
+      "bindings": {
+        "escape": "help:dismiss"
+      }
+    },
+    {
+      "context": "Attachments",
+      "bindings": {
+        "right": "attachments:next",
+        "left": "attachments:previous",
+        "backspace": null,
+        "delete": null,
+        "down": "attachments:exit",
+        "escape": "attachments:exit"
+      }
+    },
+    {
+      "context": "Footer",
+      "bindings": {
+        "up": "footer:up",
+        "ctrl+p": null,
+        "down": "footer:down",
+        "ctrl+n": null,
+        "right": "footer:next",
+        "left": "footer:previous",
+        "enter": "footer:openSelected",
+        "escape": "footer:clearSelection",
+        "x": null,
+        "backspace": null,
+        "delete": null
+      }
+    },
+    {
+      "context": "MessageSelector",
+      "bindings": {
+        "up": "messageSelector:up",
+        "down": "messageSelector:down",
+        "k": null,
+        "j": null,
+        "ctrl+p": null,
+        "ctrl+n": null,
+        "ctrl+up": null,
+        "shift+up": null,
+        "meta+up": null,
+        "shift+k": null,
+        "ctrl+down": null,
+        "shift+down": null,
+        "meta+down": null,
+        "shift+j": null,
+        "enter": "messageSelector:select"
+      }
+    },
+    {
+      "context": "DiffDialog",
+      "bindings": {
+        "escape": "diff:dismiss",
+        "left": "diff:previousSource",
+        "right": "diff:nextSource",
+        "up": "diff:previousFile",
+        "down": "diff:nextFile",
+        "enter": "diff:viewDetails",
+        "j": null,
+        "k": null,
+        "pageup": null,
+        "pagedown": null,
+        "space": null,
+        "shift+space": null,
+        "b": null,
+        "g": null,
+        "shift+g": null,
+        "home": null,
+        "end": null
+      }
+    },
+    {
+      "context": "ModelPicker",
+      "bindings": {
+        "left": "modelPicker:decreaseEffort",
+        "right": "modelPicker:increaseEffort",
+        "s": null
+      }
+    },
+    {
+      "context": "EffortSlider",
+      "bindings": {
+        "s": null
+      }
+    },
+    {
+      "context": "Select",
+      "bindings": {
+        "up": "select:previous",
+        "down": "select:next",
+        "j": null,
+        "k": null,
+        "ctrl+n": null,
+        "ctrl+p": null,
+        "pageup": null,
+        "pagedown": null,
+        "home": null,
+        "end": null,
+        "enter": "select:accept",
+        "escape": "select:cancel"
+      }
+    },
+    {
+      "context": "Plugin",
+      "bindings": {
+        "space": null,
+        "i": null,
+        "f": null
+      }
+    },
+    {
+      "context": "Agents",
+      "bindings": {
+        "ctrl+s": null,
+        "ctrl+t": null
+      }
+    }
+  ]
+}

@@ -1,0 +1,89 @@
+{
+  "$schema": "https://json.schemastore.org/claude-code-settings.json",
+  "advisorModel": "sonnet",
+  "agentPushNotifEnabled": false,
+  "attribution": {
+    "commit": "",
+    "pr": "",
+    "sessionUrl": false
+  },
+  "autoCompactEnabled": true,
+  "autoContinueAtUsageLimit": true,
+  "autoUpdatesChannel": "latest",
+  "axScreenReader": false,
+  "defaultShell": "bash",
+  "disableAllHooks": false,
+  "disableArtifact": true,
+  "disableAutoMode": "disable",
+  "disableBundledSkills": true,
+  "disableMobileSimulatorTools": true,
+  "disableRemoteControl": true,
+  "disableWorkflows": true,
+  "enableAllProjectMcpServers": true,
+  "enableArtifact": false,
+  "enableWorkflows": false,
+  "env": {
+    "CLAUDE_AX_SCREEN_READER": "0",
+    "CLAUDE_CODE_DISABLE_1M_CONTEXT": "1",
+    "CLAUDE_CODE_DISABLE_BUNDLED_SKILLS": "1",
+    "CLAUDE_CODE_DISABLE_CRON": "1",
+    "CLAUDE_CODE_DISABLE_FAST_MODE": "1",
+    "CLAUDE_CODE_DISABLE_GIT_INSTRUCTIONS": "1",
+    "CLAUDE_CODE_DISABLE_WORKFLOWS": "1",
+    "CLAUDE_CODE_SIMPLE_SYSTEM_PROMPT": "1",
+    "CLAUDE_CODE_USE_POWERSHELL_TOOL": "1",
+    "DISABLE_FEEDBACK_COMMAND": "1"
+  },
+  "includeGitInstructions": false,
+  "inputNeededNotifEnabled": true,
+  "language": "vi",
+  "model": "sonnet",
+  "modelPicker": {
+    "options": [
+      {
+        "description": "$5/$25 · 1M ctx · May 2025",
+        "label": "Opus 4.6 (legacy)",
+        "model": "claude-opus-4-6"
+      },
+      {
+        "description": "$5/$25 · 1M ctx · Jan 2026",
+        "label": "Opus 4.8 (legacy)",
+        "model": "claude-opus-4-8"
+      },
+      {
+        "description": "$3/$15 · 1M ctx · Aug 2025",
+        "label": "Sonnet 4.6 (legacy)",
+        "model": "claude-sonnet-4-6"
+      }
+    ]
+  },
+  "outputStyle": "Concise",
+  "permissions": {
+    "defaultMode": "bypassPermissions",
+    "deny": [
+      "Agent"
+    ]
+  },
+  "prefersReducedMotion": false,
+  "remoteControlAtStartup": false,
+  "respectGitignore": true,
+  "sandbox": {
+    "enabled": false
+  },
+  "skipDangerousModePermissionPrompt": true,
+  "statusLine": {
+    "command": "~/.claude/statusline-command.sh",
+    "type": "command"
+  },
+  "theme": "custom:dracula",
+  "timeFormat": "auto",
+  "tui": "fullscreen",
+  "verbose": true,
+  "viewMode": "focus",
+  "voice": {
+    "enabled": false
+  },
+  "voiceEnabled": false,
+  "wheelScrollAccelerationEnabled": false,
+  "workflowKeywordTriggerEnabled": false
+}
