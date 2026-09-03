@@ -23,6 +23,5 @@ The statusline uses Nerd Font icons — install [JetBrainsMono Nerd Font](https:
 ## Preview
 
 <div align="center">
-<img src=".github/demo.png" alt="Demo" />
+<img src=".github/demo.gif" alt="Demo" />
 </div>
-
