@@ -98,9 +98,6 @@ function Test-InstallerInteractiveOutput {
 }
 
 function Write-Step {
-    # Overwrites the current console line instead of scrolling, so the whole install
-    # reads as one status line updating under the logo. Falls back to plain scrolling
-    # lines when output isn't an interactive console (e.g. piped to a log file).
     param([string]$Text)
     if (Test-InstallerInteractiveOutput) {
         Write-Host ("`r" + $Text.PadRight(72)) -ForegroundColor DarkYellow -NoNewline
@@ -258,6 +255,29 @@ if (-not (Get-Command uv -ErrorAction SilentlyContinue)) {
 }
 Complete-Step 'Dev tools ready'
 
+if (-not (Get-Command herdr -ErrorAction SilentlyContinue)) {
+    Write-Step 'Installing herdr...'
+    try {
+        Invoke-Expression (Invoke-RestMethod -UseBasicParsing 'https://herdr.dev/install.ps1') 6>$null
+        Update-SessionPath
+    }
+    catch {
+        try {
+            $herdrCmd = Join-Path ([IO.Path]::GetTempPath()) 'herdr-install.cmd'
+            Invoke-WebRequest -UseBasicParsing 'https://herdr.dev/install.cmd' -OutFile $herdrCmd
+            & cmd.exe /c $herdrCmd | Out-Null
+            Remove-Item $herdrCmd -Force -ErrorAction SilentlyContinue
+            Update-SessionPath
+        }
+        catch {
+            Write-Warning "Skipping herdr: $_"
+        }
+    }
+}
+if (Get-Command herdr -ErrorAction SilentlyContinue) {
+    Complete-Step 'herdr ready'
+}
+
 $tmpDir = Join-Path ([IO.Path]::GetTempPath()) "claude-code-config-$PID"
 try {
     Write-Step 'Cloning config...'
@@ -275,6 +295,14 @@ try {
         $src = Join-Path $tmpDir $file
         New-Item -ItemType Directory -Force -Path (Split-Path -Parent $dest) | Out-Null
         Copy-Item -LiteralPath $src -Destination $dest -Force
+    }
+
+    Write-Step 'Installing herdr config...'
+    $herdrCfgDir = Join-Path $env:APPDATA 'herdr'
+    $herdrCfgSrc = Join-Path $tmpDir 'herdr\config.toml'
+    if (Test-Path -LiteralPath $herdrCfgSrc) {
+        New-Item -ItemType Directory -Force -Path $herdrCfgDir | Out-Null
+        Copy-Item -LiteralPath $herdrCfgSrc -Destination (Join-Path $herdrCfgDir 'config.toml') -Force
     }
 
     Complete-Step "Done. Config installed to $ClaudeDir"

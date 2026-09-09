@@ -17,7 +17,7 @@
   "disableAutoMode": "disable",
   "disableBundledSkills": true,
   "disableMobileSimulatorTools": true,
-  "disableRemoteControl": true,
+  "disableRemoteControl": false,
   "disableWorkflows": true,
   "enableAllProjectMcpServers": true,
   "enableArtifact": false,
@@ -37,7 +37,7 @@
   "includeGitInstructions": false,
   "inputNeededNotifEnabled": true,
   "language": "vi",
-  "model": "sonnet",
+  "model": "claude-opus-4-8",
   "modelPicker": {
     "options": [
       {
@@ -59,10 +59,7 @@
   },
   "outputStyle": "Concise",
   "permissions": {
-    "defaultMode": "bypassPermissions",
-    "deny": [
-      "Agent"
-    ]
+    "defaultMode": "bypassPermissions"
   },
   "prefersReducedMotion": false,
   "remoteControlAtStartup": false,
