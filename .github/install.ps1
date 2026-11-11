@@ -11,6 +11,10 @@ $ConfigRepository = 'https://github.com/ovftank/claude-code-config.git'
 $ClaudeDir = Join-Path $env:USERPROFILE '.claude'
 $Files = @('CLAUDE.md', 'settings.json', 'statusline-command.sh', 'keybindings.json', 'themes/dracula.json')
 
+$HerdrAppDir = Join-Path $env:USERPROFILE '.config\herdr-app'
+# herdr-app writes these itself; they are never shipped.
+$Generated = @('gpui-kit.d.ts', 'herdr.d.ts', 'jsconfig.json')
+
 $ClaudeLogoMaskIdle = @(
     '................',
     '................',
@@ -42,6 +46,24 @@ function Update-SessionPath {
     $machinePath = [Environment]::GetEnvironmentVariable('Path', 'Machine')
     $userPath = [Environment]::GetEnvironmentVariable('Path', 'User')
     $env:Path = "$machinePath;$userPath"
+}
+
+# Copies one file into herdr-app's home, overwriting whatever is there.
+function Install-File {
+    param([string]$Source, [string]$Destination)
+
+    New-Item -ItemType Directory -Force -Path (Split-Path -Parent $Destination) | Out-Null
+    Copy-Item -LiteralPath $Source -Destination $Destination -Force
+}
+
+function Install-Folder {
+    param([string]$Source, [string]$Destination)
+
+    Get-ChildItem -LiteralPath $Source -Recurse -File | ForEach-Object {
+        if ($Generated -contains $_.Name) { return }
+        $relative = $_.FullName.Substring($Source.Length).TrimStart('\', '/')
+        Install-File -Source $_.FullName -Destination (Join-Path $Destination $relative)
+    }
 }
 
 function Add-ToUserPath {
@@ -255,27 +277,18 @@ if (-not (Get-Command uv -ErrorAction SilentlyContinue)) {
 }
 Complete-Step 'Dev tools ready'
 
-if (-not (Get-Command herdr -ErrorAction SilentlyContinue)) {
-    Write-Step 'Installing herdr...'
+if (-not (Get-Command herdr-app -ErrorAction SilentlyContinue)) {
+    Write-Step 'Installing herdr-app...'
     try {
-        Invoke-Expression (Invoke-RestMethod -UseBasicParsing 'https://herdr.dev/install.ps1') 6>$null
+        Invoke-Expression (Invoke-RestMethod -UseBasicParsing 'https://releases.herdr.dev/app/install.ps1') 6>$null
         Update-SessionPath
     }
     catch {
-        try {
-            $herdrCmd = Join-Path ([IO.Path]::GetTempPath()) 'herdr-install.cmd'
-            Invoke-WebRequest -UseBasicParsing 'https://herdr.dev/install.cmd' -OutFile $herdrCmd
-            & cmd.exe /c $herdrCmd | Out-Null
-            Remove-Item $herdrCmd -Force -ErrorAction SilentlyContinue
-            Update-SessionPath
-        }
-        catch {
-            Write-Warning "Skipping herdr: $_"
-        }
+        Write-Warning "Skipping herdr-app: $_"
     }
 }
-if (Get-Command herdr -ErrorAction SilentlyContinue) {
-    Complete-Step 'herdr ready'
+if (Get-Command herdr-app -ErrorAction SilentlyContinue) {
+    Complete-Step 'herdr-app ready'
 }
 
 $tmpDir = Join-Path ([IO.Path]::GetTempPath()) "claude-code-config-$PID"
@@ -297,15 +310,24 @@ try {
         Copy-Item -LiteralPath $src -Destination $dest -Force
     }
 
-    Write-Step 'Installing herdr config...'
-    $herdrCfgDir = Join-Path $env:APPDATA 'herdr'
-    $herdrCfgSrc = Join-Path $tmpDir 'herdr\config.toml'
-    if (Test-Path -LiteralPath $herdrCfgSrc) {
-        New-Item -ItemType Directory -Force -Path $herdrCfgDir | Out-Null
-        Copy-Item -LiteralPath $herdrCfgSrc -Destination (Join-Path $herdrCfgDir 'config.toml') -Force
+    Write-Step 'Installing herdr-app window config...'
+    New-Item -ItemType Directory -Force -Path $HerdrAppDir | Out-Null
+
+    foreach ($file in @('settings.json', 'keys.json')) {
+        Install-File -Source (Join-Path $tmpDir "herdr-app\$file") -Destination (Join-Path $HerdrAppDir $file)
     }
 
-    Complete-Step "Done. Config installed to $ClaudeDir"
+    foreach ($folder in @('layouts', 'themes', 'mods')) {
+        Install-Folder -Source (Join-Path $tmpDir "herdr-app\$folder") -Destination (Join-Path $HerdrAppDir $folder)
+    }
+
+    if (Get-Command herdr-app -ErrorAction SilentlyContinue) {
+        foreach ($mod in Get-ChildItem -LiteralPath (Join-Path $HerdrAppDir 'mods') -Directory) {
+            herdr-app check $mod.FullName 2>&1 | Where-Object { $_ -like 'check passed*' } | ForEach-Object { Complete-Step "  $_" }
+        }
+    }
+
+    Complete-Step "Done. Claude Code config in $ClaudeDir, window config in $HerdrAppDir"
 }
 finally {
     Remove-Item $tmpDir -Recurse -Force -ErrorAction SilentlyContinue

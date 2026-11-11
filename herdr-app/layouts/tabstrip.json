@@ -1,0 +1,62 @@
+{
+  "id": "root",
+  "type": "column",
+  "children": [
+    {
+      "id": "tabs",
+      "type": "block",
+      "content": {
+        "mod": "tabstrip"
+      },
+      "size": {
+        "px": 35
+      },
+      "background": "canvas",
+      "window_drag": true
+    },
+    {
+      "id": "work-body",
+      "type": "row",
+      "children": [
+        {
+          "id": "main",
+          "type": "block",
+          "content": {
+            "tab": "active",
+            "pane": {
+              "background": "surface",
+              "border": {
+                "width": 1,
+                "color": "border"
+              },
+              "focus": {
+                "width": 1,
+                "color": "border"
+              },
+              "radius": 0,
+              "gap": 0,
+              "lone": true
+            }
+          }
+        }
+      ],
+      "padding": 0,
+      "gap": 0
+    }
+  ],
+  "background": "canvas",
+  "terminal_padding": [
+    0,
+    20
+  ],
+  "titlebar": "none",
+  "traffic_lights": [
+    12,
+    16
+  ],
+  "terminal_menu": "no-menu",
+  "theme": "dracula",
+  "font": "JetBrainsMono Nerd Font",
+  "font_size": 14,
+  "toast": "no-toast"
+}
