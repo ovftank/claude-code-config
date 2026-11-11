@@ -12,7 +12,6 @@ $ClaudeDir = Join-Path $env:USERPROFILE '.claude'
 $Files = @('CLAUDE.md', 'settings.json', 'statusline-command.sh', 'keybindings.json', 'themes/dracula.json')
 
 $HerdrAppDir = Join-Path $env:USERPROFILE '.config\herdr-app'
-# herdr-app writes these itself; they are never shipped.
 $Generated = @('gpui-kit.d.ts', 'herdr.d.ts', 'jsconfig.json')
 
 $ClaudeLogoMaskIdle = @(
@@ -48,7 +47,6 @@ function Update-SessionPath {
     $env:Path = "$machinePath;$userPath"
 }
 
-# Copies one file into herdr-app's home, overwriting whatever is there.
 function Install-File {
     param([string]$Source, [string]$Destination)
 
@@ -232,7 +230,6 @@ if (-not (Get-Command git -ErrorAction SilentlyContinue)) {
     Where-Object { $_.name -like '*-64-bit.exe' } | Select-Object -First 1
     $gitInstaller = Join-Path ([IO.Path]::GetTempPath()) $gitAsset.name
     Invoke-WebRequest -UseBasicParsing $gitAsset.browser_download_url -OutFile $gitInstaller
-    # Default components minus the two Explorer context-menu entries (Open Git Bash/GUI here)
     Start-Process $gitInstaller -ArgumentList '/VERYSILENT /NORESTART /NOCANCEL /SP- /COMPONENTS="ext,gitlfs,assoc,assoc_sh,scalar" /o:PathOption=CmdTools /o:DefaultBranchOption=main' -Wait
     Remove-Item $gitInstaller -Force -ErrorAction SilentlyContinue
     Update-SessionPath
@@ -276,6 +273,26 @@ if (-not (Get-Command uv -ErrorAction SilentlyContinue)) {
     }
 }
 Complete-Step 'Dev tools ready'
+
+if (-not (Get-Command node -ErrorAction SilentlyContinue)) {
+    Write-Step 'Installing Node.js...'
+    try {
+        $nodeVersion = 'v24.22.2'
+        $nodeFeatures = 'NodeRuntime,npm,EnvironmentPathNode,EnvironmentPathNpmModules'
+        $nodeMsi = Join-Path ([IO.Path]::GetTempPath()) "node-$nodeVersion-x64.msi"
+        Invoke-WebRequest -UseBasicParsing "https://nodejs.org/dist/$nodeVersion/node-$nodeVersion-x64.msi" -OutFile $nodeMsi
+        $install = Start-Process msiexec.exe -ArgumentList '/i', "`"$nodeMsi`"", '/qn', '/norestart', "ADDLOCAL=$nodeFeatures" -Wait -PassThru
+        Remove-Item $nodeMsi -Force -ErrorAction SilentlyContinue
+        if ($install.ExitCode -ne 0) { throw "msiexec exited $($install.ExitCode) - needs an elevated shell" }
+        Update-SessionPath
+    }
+    catch {
+        Write-Warning "Skipping Node.js: $_"
+    }
+}
+if (Get-Command node -ErrorAction SilentlyContinue) {
+    Complete-Step 'Node.js ready'
+}
 
 if (-not (Get-Command herdr-app -ErrorAction SilentlyContinue)) {
     Write-Step 'Installing herdr-app...'
