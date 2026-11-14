@@ -61,8 +61,6 @@ const SETTLE_MS = 200;
 const SETTLE_FRAME_MS = 16;
 const SETTLE_CLEAR_MS = SETTLE_FRAME_MS + SETTLE_MS + 60;
 const ANIMATION_MARGIN_MS = 40;
-const GHOST_INSET_PX = 2;
-const GHOST_BORDER_ALPHA = 0x66;
 
 const STANDARD_TAB_WIDTH = 232;
 const REORDER_THRESHOLD_DIPS = 16;
@@ -854,7 +852,9 @@ export default class Tabs extends View {
     if (d) {
       const tab = lay.byId.get(d.id);
       if (tab) {
-        children.push(this.renderFloating(tab, t));
+        children.push(
+          this.renderTab(tab, lay, t, { x: d.x, width: d.width, landing: d.phase === "settle" }),
+        );
       }
     }
 
@@ -948,16 +948,16 @@ export default class Tabs extends View {
     return codicon(GLYPH.agent, TAB_ICON_SIZE, color);
   }
 
-  renderTab(tab, lay, t) {
+  renderTab(tab, lay, t, ghost = null) {
     const active = this.isTabActive(tab);
     const labelColor = active ? t.foreground : t.dim;
     const background = active ? t.surface : t.chrome;
-    const x = (lay.xs[tab.id] ?? 0) - this.scrollX;
-    const width = lay.widths[tab.id] ?? TAB_MIN_WIDTH;
-    const hovering = this.hoveredTabId === tab.id && !this.drag;
+    const x = ghost ? ghost.x : (lay.xs[tab.id] ?? 0) - this.scrollX;
+    const width = ghost ? ghost.width : lay.widths[tab.id] ?? TAB_MIN_WIDTH;
+    const hovering = !ghost && this.hoveredTabId === tab.id && !this.drag;
 
     return h_flex()
-      .id(`tab-${tab.id}`)
+      .id(ghost ? "tab-ghost" : `tab-${tab.id}`)
       .absolute()
       .left(x)
       .top(0)
@@ -972,11 +972,23 @@ export default class Tabs extends View {
       .bg(background)
       .border_r(1)
       .border_color(t.canvas)
-      .cursor_pointer()
-      .transition("left", { duration: REORDER_MS, easing: "ease-in-out" })
+      .when(ghost, (el) =>
+        el
+          .cursor_grabbing()
+          .when(ghost.landing, (g) =>
+            g.transition("left", { duration: SETTLE_MS, easing: "ease-in-out" }),
+          ),
+      )
+      .when(!ghost, (el) =>
+        el
+          .cursor_pointer()
+          .transition("left", { duration: REORDER_MS, easing: "ease-in-out" })
+          .on_hover((isHovered, cx) => this.trackHover(tab, isHovered, cx)),
+      )
       .when(active, (el) => el.child(activeLine(t)))
-      .on_hover((isHovered, cx) => this.trackHover(tab, isHovered, cx))
-      .on_mouse_down("left", (event, cx) => this.onTabDown(tab, event, cx))
+      .on_mouse_down("left", (event, cx) =>
+        ghost ? this.onGhostDown(event, cx) : this.onTabDown(tab, event, cx),
+      )
       .child(this.renderTabIcon(tab, labelColor))
       .child(
         h_flex()
@@ -988,55 +1000,6 @@ export default class Tabs extends View {
           .child(this.renderTabAction(tab, labelColor, t, hovering)),
       )
       .when(this.isRenaming(tab), (el) => el.child(this.renderRenameInput(tab, background)));
-  }
-
-  renderFloating(tab, t) {
-    const d = this.drag;
-    const landing = d.phase === "settle";
-    const active = this.isTabActive(tab);
-    const color = active ? t.foreground : t.dim;
-
-    return h_flex()
-      .id("tab-ghost")
-      .absolute()
-      .left(d.x)
-      .top(GHOST_INSET_PX)
-      .w(d.width)
-      .h(TAB_HEIGHT - GHOST_INSET_PX * 2)
-      .rounded(5)
-      .shadow_md()
-      .bg(t.surface)
-      .border_1()
-      .border_color(withAlpha(t.accent, GHOST_BORDER_ALPHA))
-      .pl(TAB_PADDING_LEFT)
-      .pr(TAB_PADDING_RIGHT)
-      .gap(TAB_GAP)
-      .items_center()
-      .text_size(TAB_FONT_SIZE)
-      .text_color(color)
-      .cursor_grabbing()
-      .on_mouse_down("left", (event, cx) => this.onGhostDown(event, cx))
-      .when(landing, (el) => el.transition("left", { duration: SETTLE_MS, easing: "ease-in-out" }))
-      .child(activeLine(t))
-      .child(this.renderTabIcon(tab, color))
-      .child(
-        h_flex()
-          .flex_1()
-          .min_w(0)
-          .justify_between()
-          .items_center()
-          .child(div().max_w(TAB_LABEL_MAX_WIDTH).truncate().child(this.labelText(tab)))
-          .child(
-            div()
-              .flex_none()
-              .w(CLOSE_SIZE)
-              .h(CLOSE_SIZE)
-              .flex()
-              .items_center()
-              .justify_center()
-              .child(codicon(GLYPH.close, CLOSE_GLYPH_SIZE, color)),
-          ),
-      );
   }
 
   renderTabLabel(tab) {
