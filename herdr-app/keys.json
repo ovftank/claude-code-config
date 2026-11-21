@@ -1,0 +1,21 @@
+{
+  "global": {
+    "ctrl-t": "tabstrip.newTab",
+    "ctrl-w": "tab.close",
+    "ctrl-tab": "tab.next",
+    "ctrl-shift-tab": "tab.prev",
+    "ctrl-1": "tab.select:1",
+    "ctrl-2": "tab.select:2",
+    "ctrl-3": "tab.select:3",
+    "ctrl-4": "tab.select:4",
+    "ctrl-5": "tab.select:5",
+    "ctrl-6": "tab.select:6",
+    "ctrl-7": "tab.select:7",
+    "ctrl-8": "tab.select:8",
+    "ctrl-9": "tab.select:9"
+  },
+  "terminal": {
+    "ctrl-v": "terminal.paste",
+    "ctrl-shift-v": "terminal.paste"
+  }
+}

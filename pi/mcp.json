@@ -1,0 +1,59 @@
+{
+  "mcpServers": {
+    "chrome-devtools": {
+      "args": [
+        "-y",
+        "chrome-devtools-mcp@1.13.0",
+        "--usage-statistics=false"
+      ],
+      "command": "npx",
+      "description": "Debug network, console, performance trace, a11y snapshot",
+      "exposure": "codemode",
+      "timeout": 120
+    },
+    "exa": {
+      "description": "Exa web search: search the web, fetch pages and run research queries for current information",
+      "exposure": "codemode",
+      "toolExposure": {
+        "web_search_exa": "direct",
+        "web_fetch_exa": "direct"
+      },
+      "type": "http",
+      "url": "https://mcp.exa.ai/mcp?login"
+    },
+    "firecrawl": {
+      "description": "Firecrawl: scrape, crawl and extract structured content from websites",
+      "exposure": "hidden",
+      "toolExposure": {
+        "firecrawl_agent": "codemode",
+        "firecrawl_agent_status": "codemode",
+        "firecrawl_check_crawl_status": "codemode",
+        "firecrawl_crawl": "codemode",
+        "firecrawl_credit_usage": "codemode",
+        "firecrawl_developer_search": "codemode",
+        "firecrawl_map": "codemode",
+        "firecrawl_parse": "codemode",
+        "firecrawl_scrape": "direct",
+        "firecrawl_search": "direct"
+      },
+      "type": "http",
+      "url": "https://mcp.firecrawl.dev/v2/mcp-oauth"
+    },
+    "microsoft-learn": {
+      "description": "Microsoft Learn official docs — search Microsoft documentation, fetch full doc pages, find official code samples. USE for PowerShell and Windows questions; prefer over answering from memory.",
+      "exposure": "codemode",
+      "type": "http",
+      "url": "https://learn.microsoft.com/api/mcp",
+      "timeout": 120
+    },
+    "reqable": {
+      "command": "C:\\Program Files\\Reqable\\mcp-server.exe",
+      "description": "Reqable MCP (49 tools, stdio): live capture, records/curl, breakpoints, rewrite rules, Python script rules, collections, proxy on/off. Connects to the local Reqable app on 127.0.0.1:9000.",
+      "env": {
+        "REQABLE_TOKEN": "PASTE_YOUR_REQABLE_TOKEN_HERE"
+      },
+      "exposure": "codemode",
+      "timeout": 120
+    }
+  }
+}

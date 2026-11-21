@@ -1,0 +1,31 @@
+{
+  "$schema": "https://pi.dev/schemas/settings.schema.json",
+  "defaultModel": "swe-2-high",
+  "defaultProjectTrust": "always",
+  "defaultProvider": "devin",
+  "defaultThinkingLevel": "high",
+  "doubleEscapeAction": "none",
+  "editorPaddingX": 1,
+  "enableSkillCommands": true,
+  "fullscreenScrollbar": "always",
+  "terminal": {
+    "hyperlinks": true,
+    "images": "auto",
+    "showImages": true,
+    "trueColor": true
+  },
+  "theme": "dracula",
+  "treeFilterMode": "user-only",
+  "tuiMode": "fullscreen",
+  "hideThinkingBlock": true,
+  "images": {
+    "blockImages": false
+  },
+  "packages": [
+    "npm:devin-sub"
+  ],
+  "lastChangelogVersion": "1.6.0",
+  "extensionChangelogVersions": {
+    "{\"source\":\"npm:devin-sub\",\"scope\":\"user\"}": "0.2.2"
+  }
+}
